@@ -1,6 +1,4 @@
-import axios from "axios";
-
-axios.defaults.headers.common["x-api-key"] = "live_q9TojrYeI3V4pZsrMRswMVHA5QQGLAXVv8odii5yVyLRXlf0JDXDrclsyd1V49Pi";
+import { fetchBreeds, fetchCatByBreed } from "./cat-api";
 
 const selectTag = document.querySelector(".breed-select");
 const catInfo = document.querySelector(".cat-info");
@@ -11,10 +9,9 @@ errorMsg.classList.add("hidden");
 selectTag.classList.add("hidden");
 
 
-axios.get('https://api.thecatapi.com/v1/breeds')
+fetchBreeds()
   .then(function (response) {
       response.data.forEach((breed) => {
-        //  console.log(breed.name, breed.id);
         let opt = document.createElement("option");
         opt.value = breed.id;
         opt.innerHTML = breed.name;
@@ -33,7 +30,7 @@ axios.get('https://api.thecatapi.com/v1/breeds')
 selectTag.addEventListener("change", ((e) => {
   loaderMsg.classList.remove("hidden")
   catInfo.innerHTML = "";
-  axios.get(`https://api.thecatapi.com/v1/images/search?breed_ids=${e.target.value}`)
+  fetchCatByBreed(e.target.value)
       .then(function (response) {
           const description = response.data[0].breeds[0].description;
           const temperament = response.data[0].breeds[0].temperament;
