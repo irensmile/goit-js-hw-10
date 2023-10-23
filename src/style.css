@@ -1,0 +1,9 @@
+.hidden {
+    display: none;
+}
+
+.cat-info {
+    display: flex;
+    gap: 25px;
+    margin-top: 10px;
+}

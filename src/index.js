@@ -4,8 +4,10 @@ axios.defaults.headers.common["x-api-key"] = "live_q9TojrYeI3V4pZsrMRswMVHA5QQGL
 
 const selectTag = document.querySelector(".breed-select");
 const loaderMsg = document.querySelector(".loader");
-const errorrMsg = document.querySelector(".error");
-errorrMsg.style.display = "none";
+const errorMsg = document.querySelector(".error");
+
+errorMsg.classList.add("hidden");
+selectTag.classList.add("hidden");
 
 
 axios.get('https://api.thecatapi.com/v1/breeds')
@@ -22,14 +24,15 @@ axios.get('https://api.thecatapi.com/v1/breeds')
   .catch(function (error) {
     // handle error
       console.log(error);
-      errorrMsg.style.display = "block";
+      errorMsg.classList.remove("hidden");
   })
   .finally(function () {
-    loaderMsg.style.display = "none";
+    loaderMsg.classList.add("hidden");
+    selectTag.classList.remove("hidden");
   });
 
 selectTag.addEventListener("change", ((e) => {
-    loaderMsg.style.display = "block";
+    loaderMsg.classList.remove("hidden")
     axios.get(`https://api.thecatapi.com/v1/images/search?breed_ids=${e.target.value}`)
         .then(function (response) {
             const catInfo = document.querySelector(".cat-info");
@@ -37,22 +40,21 @@ selectTag.addEventListener("change", ((e) => {
             const temperament = response.data[0].breeds[0].temperament;
             const breed = response.data[0].breeds[0].name;
             const url = response.data[0].url;
-            catInfo.innerHTML = `<div style="display:flex">
+            catInfo.innerHTML = `
             <img src="${url}" alt="${breed}" width= 300>
             <div>
                 <h1>${breed}</h1>
-                <p>${description}</p>
-                <p><b>Temperament:</b> ${temperament}</p>
-            </div>
+                <p><b>Description: </b>${description}</p>
+                <p><b>Temperament: </b> ${temperament}</p>
             </div>`
             
         })
         .catch(function (error) {
             console.log(error);
-            errorrMsg.style.display = "block";
+            errorMsg.classList.remove("hidden");
         })
         .finally(function () {
-            loaderMsg.style.display = "none";
+            loaderMsg.classList.add("hidden");
         });
   }))
   
