@@ -28,6 +28,7 @@ fetchBreeds()
   });
 
 selectTag.addEventListener("change", ((e) => {
+  errorMsg.classList.add("hidden");
   loaderMsg.classList.remove("hidden")
   catInfo.innerHTML = "";
   fetchCatByBreed(e.target.value)
